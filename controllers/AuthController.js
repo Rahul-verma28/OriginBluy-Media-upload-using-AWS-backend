@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import User from "../models/UserModel.js";
+import dotenv from "dotenv"
+
+dotenv.config();
 
 const maxAge = 3 * 24 * 60 * 60; // Token expiration (3 days)
 
@@ -68,7 +71,8 @@ export const login = async (req, res) => {
 
         res.cookie("jwt", createToken(email, user._id), {
             maxAge: maxAge * 1000,
-            secure: true,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
             sameSite: "None",
         }); 
 
