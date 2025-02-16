@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
 import authRoutes from "./routes/AuthRoutes.js";
-import friendRoutes from "./routes/FriendsRoute.js";
+import mediaRoutes from "./routes/mediaRoutes.js";
 
 dotenv.config();
 
@@ -30,7 +30,7 @@ app.use(cookieParser())
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/friends", friendRoutes);
+app.use("/api/media", mediaRoutes);
 
 
 app.get("/", (req, res) => {

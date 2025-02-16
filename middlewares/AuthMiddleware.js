@@ -1,14 +1,31 @@
 import jwt from "jsonwebtoken";
+import User from "../models/UserModel.js";
 
-export const verifyToken = (req, res, next) => {
-    const token = req.cookies.jwt;
+const protect = async (req, res, next) => {
+  let token = req.cookies.jwt;
 
-    if (!token) return res.status(401).json({ message: "You are not authenticated" });
+  if (token) {
+    try {
+      // Verify the token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-        if (err) return res.status(403).json({ message: "Token is not valid" });
+      // Find user by decoded userId
+      const user = await User.findById(decoded.userId).select("-password");
 
-        req.userId = payload.userId; // Ensure this matches token payload
-        next();
-    });
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+
+      req.user = user; // Attach user object to request
+
+      next();
+    } catch (error) {
+      console.error("JWT verification error:", error);
+      res.status(401).json({ message: "Not authorized, token failed." });
+    }
+  } else {
+    res.status(401).json({ message: "Not authorized, no token." });
+  }
 };
+
+export { protect };

@@ -1,14 +1,12 @@
 import { Router } from "express";
-import { getUserById, getUserInfo, login, logout, signup, updateProfile } from "../controllers/AuthController.js";
-import { verifyToken } from "../middlewares/AuthMiddleware.js";
+import { protect } from "../middlewares/AuthMiddleware.js";
+import { getUserInfo, login, logout, signup } from "../controllers/authController.js";
 
 const authRoutes = Router();
 
 authRoutes.post("/signup", signup);
 authRoutes.post("/login", login);
 authRoutes.post("/logout", logout);
-authRoutes.get("/userinfo", verifyToken, getUserInfo);
-authRoutes.get("/user/:id",verifyToken, getUserById);
-authRoutes.post("/updateProfile", verifyToken, updateProfile);
+authRoutes.get("/userinfo", protect, getUserInfo);
 
 export default authRoutes;
