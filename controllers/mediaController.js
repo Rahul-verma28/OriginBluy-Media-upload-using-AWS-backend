@@ -2,29 +2,6 @@ import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import Media from "../models/MediaModel.js";
 import { s3 } from "../middlewares/uploadMiddleware.js";
 
-// Upload media to AWS S3
-// export const uploadMedia = async (req, res) => {
-//   const { type } = req.body;
-
-//   try {
-//     if (!req.file) {
-//       return res.status(400).json({ message: "No file uploaded." });
-//     }
-
-//     const media = await Media.create({
-//       user: req.user._id, // Get user from authenticated request
-//       filename: req.file.originalname,
-//       url: req.file.location, // AWS S3 URL
-//       type,
-//     });
-
-//     res.status(201).json(media);
-//   } catch (error) {
-//     console.error("Upload error:", error);
-//     res.status(500).json({ message: "Server error." });
-//   }
-// };
-
 
 export const uploadMedia = async (req, res) => {
   try {
